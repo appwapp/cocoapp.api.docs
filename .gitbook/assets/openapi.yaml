@@ -1,0 +1,900 @@
+openapi: 3.0.2
+
+#------------------------------------------------------------------------------
+# General information
+#------------------------------------------------------------------------------
+
+info:
+  title: Cocoapp Service API (External)
+  description: This document describes how to use the Cocoapp service's API.
+  version: 1.0.0
+  contact:
+    name: "Cocoapp Service API (External)"
+
+#------------------------------------------------------------------------------
+# Servers
+#------------------------------------------------------------------------------
+
+servers:
+  - url: https://api.cocoapp.test/api/external/v1
+    description: Local (development) server
+
+#------------------------------------------------------------------------------
+# Security
+#------------------------------------------------------------------------------
+
+security:
+  - bearerAuth: []
+
+#------------------------------------------------------------------------------
+# Tags
+#------------------------------------------------------------------------------
+
+tags:
+  - name: Contacts
+    description: Contact-related operations
+
+#------------------------------------------------------------------------------
+# Endpoint definitions
+#------------------------------------------------------------------------------
+
+paths:
+
+  #----------------------------------------------------------------------------
+  # Contacts
+  #----------------------------------------------------------------------------
+
+  '/contacts':
+
+    # Contact INDEX
+    get:
+      operationId: contactIndex
+      summary: Get a list of contacts
+      description: High-level, cross-connector contacts.
+      tags:
+        - Contacts
+      parameters:
+        - name: filter[email]
+          in: query
+          description: Filter the results by email
+          schema:
+            type: string
+        - name: filter[from]
+          in: query
+          description: Filter the results with start date (UTC)
+          schema:
+            type: string
+        - name: filter[name]
+          in: query
+          description: Filter the results by name
+          schema:
+            type: string
+        - name: filter[first-name]
+          in: query
+          description: Filter the results by first name
+          schema:
+            type: string
+        - name: filter[last-name]
+          in: query
+          description: Filter the results by last name
+          schema:
+            type: string
+        - name: filter[phone-number]
+          in: query
+          description: Filter the results by phone number
+          schema:
+            type: string
+        - name: filter[with-tags]
+          in: query
+          description: Filter the results with tags
+          schema:
+            type: string
+        - name: filter[without-tags]
+          in: query
+          description: Filter the results without tags
+          schema:
+            type: string
+        - name: filter[to]
+          in: query
+          description: Filter the results with end date (UTC)
+          schema:
+            type: string
+        - name: filter[without-tags]
+          in: query
+          description: Filter the results without tags
+          schema:
+            type: string
+        - $ref: '#/components/parameters/filterOperator'
+        - name: include
+          in: query
+          description: Include related resources like "notes"
+          schema:
+            type: string
+        - name: page[number]
+          in: query
+          description: Page number to return
+          schema:
+            type: integer
+        - name: page[size]
+          in: query
+          description: Number of entities per page to return
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Sort the results by "created-at", "email", "id", "most-active", "first-name", "last-name" or "phone-number"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Contacts'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+    # Contact CREATE
+    post:
+      operationId: contactCreate
+      summary: Create a contact
+      tags:
+        - Contacts
+      requestBody:
+        $ref: '#/components/requestBodies/ContactCreate'
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '415':
+          $ref: '#/components/responses/415'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+  '/contacts/{id}':
+
+    # Contact READ
+    get:
+      operationId: contactRead
+      summary: Get a contact
+      description: High-level, cross-connector contacts.
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/uuid'
+        - $ref: '#/components/parameters/include'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Contact'
+                  included:
+                    allOf:
+                      - $ref: '#/components/schemas/Include'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+    # Contact UPDATE
+    patch:
+      operationId: contactUpdate
+      summary: Update a contact
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/uuid'
+      requestBody:
+        $ref: '#/components/requestBodies/ContactUpdate'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '415':
+          $ref: '#/components/responses/415'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+  '/contacts/{id}/profile-picture':
+
+    # Contact UPDATE profile picture
+    post:
+      operationId: contactProfilePicture
+      summary: Update a contact's profile picture
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/uuid'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - profile-picture
+              properties:
+                profile-picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - links
+                    properties:
+                      links:
+                        type: object
+                        required:
+                          - profile-picture
+                        properties:
+                          profile-picture:
+                            type: string
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '415':
+          $ref: '#/components/responses/415'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+    # User DELETE profile picture
+    delete:
+      operationId: contactDeleteProfilePicture
+      summary: Delete a contact's profile picture
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/uuid'
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '415':
+          $ref: '#/components/responses/415'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+
+#------------------------------------------------------------------------------
+# Reusable components
+#------------------------------------------------------------------------------
+
+components:
+
+  #----------------------------------------------------------------------------
+  # Schemas
+  #----------------------------------------------------------------------------
+
+  schemas:
+
+    #--------------------------------------------------------------------------
+    # Contacts
+    #--------------------------------------------------------------------------
+
+    # Single Contact
+    Contact:
+      type: object
+      required:
+        - type
+        - id
+        - attributes
+      properties:
+        type:
+          type: string
+          example: contacts
+        id:
+          type: string
+        attributes:
+          type: object
+          required:
+            - email
+            - name
+            - profile-picture
+            - phone-number
+            - created-at
+            - updated-at
+          properties:
+            email:
+              type: string
+            name:
+              type: string
+            first-name:
+              type: string
+              nullable: true
+            last-name:
+              type: string
+              nullable: true
+            profile-picture:
+              type: string
+              nullable: true
+            phone-number:
+              type: string
+              nullable: true
+            facebook-id:
+              type: string
+              nullable: true
+            connector-name:
+              type: string
+              nullable: true
+            connector-first-name:
+              type: string
+              nullable: true
+            connector-last-name:
+              type: string
+              nullable: true
+            created-at:
+              type: string
+            updated-at:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+        relationships:
+          type: object
+          properties:
+            notes:
+              $ref: '#/components/schemas/ToManyRelationshipRead'
+        links:
+          $ref: '#/components/schemas/Link'
+
+    # List of Contacts
+    Contacts:
+      type: object
+      required:
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        links:
+          $ref: '#/components/schemas/PaginationLink'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        included:
+          $ref: '#/components/schemas/Include'
+
+    #--------------------------------------------------------------------------
+    # JSON:API
+    #--------------------------------------------------------------------------
+
+    # Data
+    Data:
+      type: object
+      nullable: true
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+
+    # Include
+    Include:
+      type: array
+      items:
+        type: object
+        required:
+          - type
+          - id
+          - attributes
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          attributes:
+            type: object
+          relationships:
+            type: object
+
+    # Link
+    Link:
+      type: object
+      properties:
+        self:
+          type: string
+        related:
+          type: string
+
+    # Meta
+    Meta:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            current-page:
+              type: integer
+            per-page:
+              type: integer
+            from:
+              type: integer
+            to:
+              type: integer
+            total:
+              type: integer
+            last-page:
+              type: integer
+
+    # Pagination Link
+    PaginationLink:
+      type: object
+      properties:
+        first:
+          type: string
+        last:
+          type: string
+
+    # To-One Relationship (Write)
+    ToOneRelationshipWrite:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+
+    # To-Many Relationship (Write)
+    ToManyRelationshipWrite:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+
+    # To-One Relationship (Read)
+    ToOneRelationshipRead:
+      type: object
+      required:
+        - links
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        links:
+          $ref: '#/components/schemas/Link'
+
+    # To-Many Relationship (Read)
+    ToManyRelationshipRead:
+      type: object
+      required:
+        - links
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        links:
+          $ref: '#/components/schemas/Link'
+
+    # To-One Relationship Optional (Read)
+    ToOneRelationshipReadOptional:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        links:
+          $ref: '#/components/schemas/Link'
+
+    # To-Many Relationship Optional (Read)
+    ToManyRelationshipReadOptional:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        links:
+          $ref: '#/components/schemas/Link'
+
+    #--------------------------------------------------------------------------
+    # Errors
+    #--------------------------------------------------------------------------
+
+    # Bad request error response
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/GenericError'
+        - type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                  source:
+                    type: object
+                    properties:
+                      pointer:
+                        type: string
+
+    # Basic error response
+    GenericError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+              title:
+                type: string
+
+  #----------------------------------------------------------------------------
+  # Request bodies
+  #----------------------------------------------------------------------------
+
+  requestBodies:
+
+    #--------------------------------------------------------------------------
+    # Contacts
+    #--------------------------------------------------------------------------
+
+    ContactCreate:
+      required: true
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                required:
+                  - type
+                  - attributes
+                properties:
+                  type:
+                    type: string
+                    example: contacts
+                  attributes:
+                    type: object
+                    required:
+                      - email
+                      - name
+                      - phone-number
+                    properties:
+                      email:
+                        type: string
+                        example: user@cocoapp.test
+                      name:
+                        type: string
+                      first-name:
+                        type: string
+                        nullable: true
+                      last-name:
+                        type: string
+                        nullable: true
+                      phone-number:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                      facebook-id:
+                        type: string
+                        nullable: true
+                  relationships:
+                    type: object
+                    properties:
+                      notes:
+                        $ref: '#/components/schemas/ToManyRelationshipWrite'
+
+    ContactUpdate:
+      required: true
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                required:
+                  - id
+                  - type
+                  - attributes
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                    example: contacts
+                  attributes:
+                    type: object
+                    required:
+                      - email
+                      - name
+                      - phone-number
+                    properties:
+                      email:
+                        type: string
+                        example: user@cocoapp.test
+                      name:
+                        type: string
+                      first-name:
+                        type: string
+                        nullable: true
+                      last-name:
+                        type: string
+                        nullable: true
+                      phone-number:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                      facebook-id:
+                        type: string
+                        nullable: true
+                  relationships:
+                    type: object
+                    properties:
+                      notes:
+                        $ref: '#/components/schemas/ToManyRelationshipWrite'
+
+  #----------------------------------------------------------------------------
+  # Parameters
+  #----------------------------------------------------------------------------
+
+  parameters:
+
+    # ID
+    id:
+      name: id
+      in: path
+      description: ID of the entity
+      required: true
+      schema:
+        type: integer
+
+    # Including resources
+    include:
+      name: include
+      in: query
+      description: Include related resources
+      schema:
+        type: string
+
+    # Filtering
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+
+    # Filtering: operator
+    filterOperator:
+      name: filter[op]
+      in: query
+      description: Operator to use for filters ("and" or "or", defaults to "and")
+      schema:
+        type: string
+
+    # Pagination : page number
+    pageNumber:
+      name: page[number]
+      in: query
+      description: Page number to return
+      schema:
+        type: integer
+
+    # Pagination : number of element per page
+    pageSize:
+      name: page[size]
+      in: query
+      description: Number of entities per page to return
+      schema:
+        type: integer
+
+    # Sorting
+    sort:
+      name: sort
+      in: query
+      description: Sort the results by attribute
+      schema:
+        type: string
+
+    # UUID
+    uuid:
+      name: id
+      in: path
+      description: UUID of the entity
+      required: true
+      schema:
+        type: string
+
+  #----------------------------------------------------------------------------
+  # Responses
+  #----------------------------------------------------------------------------
+
+  responses:
+
+    # 200 HTTP success response
+    '200':
+      description: Ok
+
+    # 201 HTTP created response
+    '201':
+      description: Created
+
+    # 204 HTTP no content response
+    '204':
+      description: No content
+
+    # 400 HTTP error response
+    '400':
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+
+    # 401 HTTP error response
+    '401':
+      description: Unauthorized access
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+    # 403 HTTP error response
+    '403':
+      description: Forbidden access
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+    # 404 HTTP error response
+    '404':
+      description: Data not found
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+    # 406 HTTP error response
+    '406':
+      description: Not acceptable
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+    # 415 HTTP error response
+    '415':
+      description: Unsupported media type
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+    # 422 HTTP error response
+    '422':
+      description: Unprocessable entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+
+    # 500 HTTP error response
+    '500':
+      description: An error occurred
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
+  #----------------------------------------------------------------------------
+  # Security Schemes
+  #----------------------------------------------------------------------------
+
+  securitySchemes:
+
+    #--------------------------------------------------------------------------
+    # Bearer token
+    #--------------------------------------------------------------------------
+
+    bearerAuth:
+      type: http
+      scheme: bearer
