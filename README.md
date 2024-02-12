@@ -1,21 +1,6 @@
----
-description: Documentation et exemples d'intégrations
-layout:
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: false
-  outline:
-    visible: false
-  pagination:
-    visible: false
----
-
 # 🥥 Cocoapp API
 
-Cocoapp vous permet d'interagir directement avec son API pour certaines ressources.&#x20;
+Cocoapp vous permet d'interagir directement avec son API pour certaines ressources.
 
 ## Accès
 
@@ -49,6 +34,4 @@ Cocoapp est séparé en plusieurs APIs, un API principal ainsi qu'un API par con
 
 <table><thead><tr><th width="197">API</th><th width="138">Version</th><th>Resources disponibles</th></tr></thead><tbody><tr><td><a href="https://app.swaggerhub.com/apis/Appwapp/Cocoapp/v1.0.0#/">Core</a></td><td>v1 (1.0.0)</td><td><ul><li>Contacts</li></ul></td></tr><tr><td><a href="https://app.swaggerhub.com/apis-docs/Appwapp/Cocoapp-SMS/1.0.0">SMS</a></td><td>v1 (1.0.0)</td><td><ul><li>Messages SMS (envoi seulement)</li></ul></td></tr></tbody></table>
 
-{% hint style="info" %}
 La version de l'API est representée par `v1` dans l'URL, il n'est pas nécessaire de passer la version complète. Lorsqu'une nouvelle version est disponible sous la même version majeure, aucune changement qui brise l'utilisation de l'API ne sera déployé. Tout changement qui peut briser son fonctionnement sera ajouté dans une autre
-{% endhint %}
