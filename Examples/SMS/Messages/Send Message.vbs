@@ -13,7 +13,7 @@ xmlHttp.setRequestHeader "Authorization", "Bearer " + apiKey
 xmlHttp.setRequestHeader "Content-Type",  "application/vnd.api+json"
 
 ' Send the request with a JSON body
-xmlHttp.Send("{""data"": { ""type"": ""messages"", ""attributes"": { ""to"": ""+15148308011"", ""content"": ""Hello world!"" } } }")
+xmlHttp.Send("{""data"": { ""type"": ""messages"", ""attributes"": { ""to"": ""+15145551234"", ""content"": ""Hello world!"" } } }")
 
 ' Get the response
 If xmlHttp.status = 201 Then
